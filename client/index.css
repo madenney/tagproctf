@@ -1,0 +1,17 @@
+#main {
+    width: 80vw;
+    height: 80vh;
+    background-color: gray;
+    border: solid black 4px;
+    border-radius: 10px;
+}
+
+#canvas-container {
+    width: 700px;
+    height: 450px;
+    margin: auto;
+    margin-top: 0px;
+    box-sizing: border-box;
+    background-color: green;
+    border: solid black 10px;
+}

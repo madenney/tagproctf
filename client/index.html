@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <title>CTF</title>
+    <script src = "index.js"></script>
+    <link href = "index.css" type = "text/css" rel = "stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $(document).ready(function() {
+
+            var canvasWidth = $("#canvas-container").css("width");
+            var canvasHeight = $("#canvas-container").css("height");
+            canvasWidth = canvasWidth.substring(0, canvasWidth.indexOf("p"));
+            canvasHeight = canvasHeight.substring(0, canvasHeight.indexOf("p"));
+
+            var canvas = document.getElementById("game-area");
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            var game = new Game();
+            game.keyListener();
+
+
+            $(function () {
+                var socket = io();
+                $('#join-button').click(function(){
+                    socket.emit('join', "test message");
+                    return false;
+                });
+
+                socket.on('addedSelf', function(id){
+                    game.addClientPlayer(id);
+                    game.beginPolling(socket);
+                    $("#join-button").attr("disabled", "");
+                });
+                socket.on('newPlayer', function(id) {
+                    console.log("newPlayer socket input")
+                });
+                socket.on('gameInfo', function(info){
+                    game.recieveUpdate(info);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1 id = "main-title"> Room </h1>
+<div id = "main">
+    <button id = "join-button"> Join </button>
+    <div id="canvas-container">
+        <canvas id = "game-area"></canvas>
+    </div>
+
+</div>
+</body>
+</html>
